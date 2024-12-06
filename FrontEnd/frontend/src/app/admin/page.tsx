@@ -5,12 +5,14 @@ import { Table, Button, message, Input} from 'antd';
 import { getAdminUsers, updateUser, deleteUser } from '@/utils/api';
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import { User } from '../../types/types';
+import { getAuthToken } from '@/utils/auth';
 
 const AdminUserTable = () => {
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
   const [editableUserId, setEditableUserId] = useState<number | null>(null);
-
+  const [isAdmin, setIsAdmin] = useState<boolean>(false);
+  const [showPopup, setShowPopup] = useState<boolean>(false);
   const fetchUsers = async () => {
     try {
       const usersData = await getAdminUsers();
@@ -31,8 +33,26 @@ const AdminUserTable = () => {
   };
 
   useEffect(() => {
+    
+    const token = getAuthToken();
+    if (token) {
+      // Decodifica el token para verificar el rol del usuario
+      const decodedToken = JSON.parse(atob(token.split('.')[1]));
+      if (decodedToken.rol === 'admin') {
+        setIsAdmin(true);
+      } else {
+        setShowPopup(true);
+        setTimeout(() => {
+            setShowPopup(false);
+            router.push('/login'); // Redirige a login después de ocultar el popup
+          }, 3000);
+      }
+    } else {
+      message.error('No estás autenticado.');
+    }
     fetchUsers();
   }, []);
+
 
   const handleEdit = async (user: User) => {
     try {
@@ -109,13 +129,16 @@ const AdminUserTable = () => {
   ];
 
   return (
-    <Table
-      columns={columns}
-      dataSource={users}
-      rowKey="id"
-      pagination={{ pageSize: 10 }}
-      className='m-4'
-    />
+    <>
+        {showPopup && <div className='bg-red-600 w-full text-2xl justify-center items-center'>No estas autorizado para ver esta tabla</div>}
+        <Table
+        columns={columns}
+        dataSource={users}
+        rowKey="id"
+        pagination={{ pageSize: 10 }}
+        className='m-4'
+        />
+    </>
   );
 };
 
