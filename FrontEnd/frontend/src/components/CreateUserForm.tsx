@@ -2,12 +2,12 @@ import { useState } from 'react';
 import { Input, Button, message, Modal } from 'antd';
 
 interface CreateUserFormProps {
-    visible: boolean; // Type for visibility
+    open: boolean; // Type for visibility
     onClose: () => void; // Type for the close function
     onUserCreated: () => void; // Type for the user created callback
 }
 
-const CreateUserForm: React.FC<CreateUserFormProps> = ({ visible, onClose, onUserCreated }) => {
+const CreateUserForm: React.FC<CreateUserFormProps> = ({ open, onClose, onUserCreated }) => {
     const [usuario, setUsuario] = useState('');
     const [correo, setCorreo] = useState('');
     const [nombre, setNombre] = useState('');
@@ -48,7 +48,7 @@ const CreateUserForm: React.FC<CreateUserFormProps> = ({ visible, onClose, onUse
     return (
         <Modal
             title="Create New User"
-            visible={visible}
+            open={open}
             onCancel={onClose}
             footer={[
                 <Button key="cancel" onClick={onClose}>

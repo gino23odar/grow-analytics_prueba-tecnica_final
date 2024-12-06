@@ -1,4 +1,4 @@
-'use client';
+'use client'
 
 import { useState, useEffect } from 'react';
 import { Table, Button, message } from 'antd';
@@ -15,12 +15,21 @@ export default function UsersPage() {
     const fetchUsers = async () => {
         try {
             const usersData = await getUsers();
-            setUsers(usersData);
+            console.log(usersData);
+    
+            if (Array.isArray(usersData.data)) {
+                setUsers(usersData.data);
+            } else if (typeof usersData.data === 'object') {
+                setUsers(Object.values(usersData.data).map((user) => ({ ...(user as User), key: (user as User).id })));
+            } else {
+                message.error('Invalid data format received!');
+            }
         } catch (error) {
             console.error(error);
             message.error('Failed to fetch users!');
         }
     };
+    
 
     useEffect(() => {
         fetchUsers();
@@ -42,7 +51,6 @@ export default function UsersPage() {
     };
 
     const handleUserCreated = () => {
-        // Refresh the user list after creating a new user
         fetchUsers();
     };
 
@@ -70,12 +78,22 @@ export default function UsersPage() {
         {
             title: 'Actions',
             render: (text: string, record: User) => (
-                <div>
-                    <Button onClick={() => handleEdit(record.id)} className="mr-2" icon={<i className="fas fa-pencil-alt" />} />
-                    <Button onClick={() => handleDelete(record.id)} icon={<i className="fas fa-trash" />} />
+                <div key={record.id}> {/* Make sure each child element has a unique key */}
+                    <Button
+                        key={`edit-${record.id}`} // Ensure unique keys for buttons
+                        onClick={() => handleEdit(record.id)}
+                        className="mr-2"
+                        icon={<i className="fas fa-pencil-alt" />}
+                    />
+                    <Button
+                        key={`delete-${record.id}`} // Ensure unique keys for buttons
+                        onClick={() => handleDelete(record.id)}
+                        icon={<i className="fas fa-trash" />}
+                    />
                 </div>
             ),
         },
+        
     ];
 
     return (
@@ -95,10 +113,11 @@ export default function UsersPage() {
                 className='mx-4'
             />
             <CreateUserForm
-                visible={isCreateUserModalVisible}
+                open={isCreateUserModalVisible}
                 onClose={() => setIsCreateUserModalVisible(false)}
                 onUserCreated={handleUserCreated}
             />
         </>
     );
 }
+
