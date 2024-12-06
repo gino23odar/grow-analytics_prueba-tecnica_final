@@ -6,7 +6,10 @@ import { useRouter } from 'next/navigation';
 import { getUser, updateUser } from '../../../utils/api';
 import { User, UserUpdateData } from '../../../types/types';
 
+
 export default function UserDetailPage({ params }: { params: { id: string } }) {
+    const { id } = params; 
+
     const [user, setUser] = useState<User>();
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
@@ -15,7 +18,7 @@ export default function UserDetailPage({ params }: { params: { id: string } }) {
     useEffect(() => {
         const fetchUser = async () => {
             try {
-                const userData = await getUser(Number(params.id));
+                const userData = await getUser(Number(id));
                 setUser(userData);
                 setName(userData.nombre_completo);
                 setEmail(userData.correo);
@@ -26,7 +29,7 @@ export default function UserDetailPage({ params }: { params: { id: string } }) {
         };
 
         fetchUser();
-    }, [params.id]);
+    }, [id]);
 
     const handleSave = async () => {
         try {
@@ -56,7 +59,7 @@ export default function UserDetailPage({ params }: { params: { id: string } }) {
 
     return (
         <div className="w-96 mx-auto p-8 bg-white shadow">
-            <h2 className="text-2xl font-semibold mb-4">Edit User</h2>
+            <h2 className="text-2xl font-semibold mb-4">Editar Usuario</h2>
             <Input
                 className="mb-4"
                 placeholder="Full Name"

@@ -26,6 +26,7 @@ export async function getUsers() {
 
 export async function getUser(id: number) {
     const response = await fetch(`${BASE_URL}/users/${id}`, {
+        method: 'PUT',
         headers: getAuthHeaders(),
     });
     if (!response.ok) throw new Error('Failed to fetch user');
