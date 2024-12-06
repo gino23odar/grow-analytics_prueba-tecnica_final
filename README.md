@@ -118,7 +118,7 @@ grow-backend/
 ├── .env                     
 ├── package.json             
 └── swagger.json             # Definición de la API para Swagger
-
+```
 
 
 ### Proceso
