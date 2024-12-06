@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Input, Button, message } from 'antd';
 import { updateUser } from '@/utils/api';
 import { User } from '@/types/types';
@@ -14,6 +14,15 @@ const EditUserForm: React.FC<EditUserFormProps> = ({ user, onUserUpdated }) => {
     const [nombre, setNombre] = useState(user.nombre);
     const [apellPaterno, setApellPaterno] = useState(user.apell_paterno);
     const [apellMaterno, setApellMaterno] = useState(user.apell_materno);
+
+    useEffect(() => {
+        // Update state when user prop changes
+        setUsuario(user.usuario);
+        setCorreo(user.correo);
+        setNombre(user.nombre);
+        setApellPaterno(user.apell_paterno);
+        setApellMaterno(user.apell_materno);
+    }, [user]);
 
     const handleSave = async () => {
         try {

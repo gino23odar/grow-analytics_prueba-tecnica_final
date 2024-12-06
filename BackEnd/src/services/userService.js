@@ -47,14 +47,15 @@ const createUser = async (usuario, correo, contrasena, rol_id, nombre, apell_pat
   return newUser;
 };
 
-const updateUser = async (id, usuario, correo, contrasena, rol_id) => {
+const updateUser = async (id, usuario, correo, nombre, apell_paterno, apell_materno) => {
   const updatedUser = await prisma.usuario.update({
     where: { id: parseInt(id) },
     data: {
       usuario,
       correo,
-      contrasena: contrasena ? await bcrypt.hash(contrasena, 10) : undefined,
-      rol_id,
+      nombre,
+      apell_paterno,
+      apell_materno,
     },
   });
   return updatedUser;

@@ -31,9 +31,9 @@ const createUserHandler = async (req, res) => {
 // Editar usuario
 const updateUserHandler = async (req, res) => {
   const { id } = req.params;
-  const { usuario, correo, contrasena, rol_id } = req.body;
+  const { usuario, correo, nombre, apell_paterno, apell_materno } = req.body;
   try {
-    const updatedUser = await updateUser(id, usuario, correo, contrasena, rol_id);
+    const updatedUser = await updateUser(id, usuario, correo, nombre, apell_paterno, apell_materno);
     res.json(updatedUser);
   } catch (error) {
     res.status(400).json({ error: error.message });
