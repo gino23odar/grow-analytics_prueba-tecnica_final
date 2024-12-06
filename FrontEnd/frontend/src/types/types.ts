@@ -14,3 +14,10 @@ export type UserUpdateData = {
     apell_materno: string;
     correo: string;
 };
+
+export type AdminUser = {
+    id: number;
+    usuario: string;
+    tipo_usuario: string;
+    // Add other fields as necessary
+};

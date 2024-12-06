@@ -17,10 +17,10 @@ const Header = () => {
       <nav className="space-x-4">
         <ul className='flex flex-row justify-between items-center gap-8'>
           <li>
-            <a className="hover:underline" href='/'>BASICO</a>
+            <a className="hover:underline" href='/users'>BASICO</a>
           </li>
           <li>
-            <a className="hover:underline" href='/users'>EXTRA</a>
+            <a className="hover:underline" href='/admin'>EXTRA</a>
           </li>
           <li>
             <button onClick={handleLogout} className="hover:underline">

@@ -1,4 +1,4 @@
-import { User } from '../types/types';
+import { User, AdminUser } from '../types/types';
 
 const BASE_URL = 'http://localhost:3001/api'; // Base URL for the API
 
@@ -51,4 +51,21 @@ export async function updateUser(id: number, data: User) {
         },
     });
     if (!response.ok) throw new Error('Failed to update user');
+}
+
+export async function getAdminUsers(): Promise<{ data: AdminUser[] }> {
+  const response = await fetch(`${BASE_URL}/admin/users`, {
+    method: 'GET',
+    headers: {
+      'Authorization': `Bearer ${localStorage.getItem('authToken')}`,
+      'Content-Type': 'application/json',
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error('Failed to fetch admin users');
+  }
+
+  const data = await response.json();
+  return { data: data }; // Wrap the response in an object with a 'data' property
 }

@@ -27,7 +27,7 @@ export default function UsersPage() {
             } else if (typeof usersData.data === 'object') {
                 setUsers(Object.values(usersData.data).map((user) => ({ ...(user as User), key: (user as User).id })));
             } else {
-                message.error('Invalid data format received!');
+                message.error('Fomato de data invalido!');
             }
         } catch (error) {
             console.error(error);

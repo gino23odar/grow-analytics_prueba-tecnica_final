@@ -5,6 +5,7 @@ const swaggerDocs = require('./config/swagger');
 const dotenv = require('dotenv');
 const authRoutes = require('./routes/auth');
 const userRoutes = require('./routes/user');
+const adminRoutes = require('./routes/admin');
 const authenticateJWT = require('./middlewares/auth');
 
 dotenv.config();
@@ -26,7 +27,8 @@ app.use(express.urlencoded({ extended: true }));
 // Swagger docu
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
-app.use('/api/auth', authRoutes); // Authentication routes (login, register)
+app.use('/api/auth', authRoutes); // Authentication routes
 app.use('/api/users', authenticateJWT, userRoutes); // API routes
+app.use('/api/admin', authenticateJWT, adminRoutes);
 
 module.exports = app;
