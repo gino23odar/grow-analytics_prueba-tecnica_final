@@ -1,8 +1,10 @@
 # Prueba Técnica - Gino Odar
 
+*este repo fue creado por un error que comprometio los archivos del repo inicial, este se puede ver para revisar el historial de commits [aqui](https://github.com/gino23odar/grow-analytics_prueba-tecnica)*
+
 ## Introducción
 
-Gracias por participar en esta convocatoria para la empresa **GROW ANALYTICS**. Esta prueba técnica está diseñada para evaluar tus habilidades como programador Full Stack, enfocándose en el uso de tecnologías como ReactJS, NodeJS, Redux, ExpressJS, Prisma, Swagger, MySQL, Jest, Docker, entre otras.
+**GROW ANALYTICS**. Esta prueba técnica está diseñada para evaluar tus habilidades como programador Full Stack, enfocándose en el uso de tecnologías como ReactJS, NodeJS, Redux, ExpressJS, Prisma, Swagger, MySQL, Jest, Docker, entre otras.
 
 El proyecto tiene como objetivo la creación de una plataforma desde cero, gestionando todo el ciclo de desarrollo, desde el frontend hasta el backend. A continuación, se describen los requisitos y las características de la prueba.
 
@@ -115,4 +117,27 @@ grow-backend/
 ├── docker-compose.yml       # Configuración de Docker para levantar la base de datos  
 ├── .env                     
 ├── package.json             
-└── swagger.json             # Definición de la API para Swagger  
+└── swagger.json             # Definición de la API para Swagger
+
+
+
+### Proceso
+
+Crear usuario con rol a eleccion en la pagina de signup/registro (solo admin o user).
+
+Esperar a ver el tooltip indicando un registro exitoso.
+
+Introducir Credenciales para ingresar a la aplicacion.
+
+Inmediatamente dirigido a la tabla principal.
+
+Si el usuario es de tipo admin puede ver la segunda tabla en la ruta protejida con el boton 'EXTRA' en el header.
+
+Ambas tablas pueden filtrar, buscar y ordenar por columna.
+
+Las rutas principales del backend estan documentadas con swagger.
+
+Por incluir:
+-version dark/light (toggle)
+-pruebas unitarias
+-documentacion
