@@ -17,6 +17,7 @@ const loginUser = async (req, res) => {
     const token = await login(correo, contrasena);
     res.json({ token });
   } catch (error) {
+    console.error('Login error:', error);
     res.status(401).json({ error: error.message });
   }
 };

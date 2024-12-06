@@ -1,12 +1,16 @@
 const BASE_URL = 'http://localhost:3001/api/auth'; // Base URL for the authentication API
 
 export async function login(email: string, password: string): Promise<void> {
+
+    if (!email || !password) {
+        throw new Error("Email and password are required");
+    }
     const response = await fetch(`${BASE_URL}/login`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ correo: email, contrasena: password }),
     });
 
     if (!response.ok) {
@@ -61,6 +65,4 @@ export async function register(
         const errorData = await response.json();
         throw new Error(errorData?.message || 'Registration failed');
     }
-
-    // Optionally handle any success logic, like showing a success message or redirecting
 }
