@@ -13,6 +13,7 @@ export default function RegisterPage() {
     const [apellPaterno, setApellPaterno] = useState('');
     const [apellMaterno, setApellMaterno] = useState('');
     const [tipoUsuario, setTipoUsuario] = useState('user'); // Default user type
+    const [showPopup, setShowPopup] = useState(false); // Estado para el popup
     const router = useRouter();
 
 
@@ -21,8 +22,14 @@ export default function RegisterPage() {
     const handleRegister = async () => {
         try {
           await register(usuario, correo, contrasena, rolId, nombre, apellPaterno, apellMaterno, tipoUsuario);
-          message.success('Registro exitoso!');
-          router.push('/login'); // Redirect to login after successful registration
+          console.log('Registro exitoso'); 
+          setShowPopup(true); // Muestra el popup
+
+          // Oculta el popup después de 3 segundos
+          setTimeout(() => {
+            setShowPopup(false);
+            router.push('/login'); // Redirige a login después de ocultar el popup
+          }, 3000);
         } catch (error) {
           console.error(error);
           message.error('Error al registrar!');
@@ -35,6 +42,14 @@ export default function RegisterPage() {
 
   return (
     <div className="flex justify-center items-center h-screen">
+        {/* Popup para el registro exitoso */}
+        {showPopup && (
+            <div className="fixed top-0 left-0 right-0 mt-4 text-center">
+                <div className="bg-green-500 text-white p-4 rounded shadow-lg">
+                    Registro exitoso! Por favor use las mismas credenciales para iniciar sesión.
+                </div>
+            </div>
+        )}
         <div className='grid grid-cols-1 md:grid-cols-2 w-1/2'>
             <img 
                 src="/pruebatecnicacover.jpg" 

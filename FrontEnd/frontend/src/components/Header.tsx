@@ -23,7 +23,7 @@ const Header = () => {
             <a className="hover:underline" href='/admin'>EXTRA</a>
           </li>
           <li>
-            <button onClick={handleLogout} className="hover:underline">
+            <button onClick={handleLogout} className="hover:underline bg-red-600 p-2 rounded-lg">
               Logout
             </button>
           </li>
