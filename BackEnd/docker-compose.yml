@@ -1,0 +1,33 @@
+version: "3.8"
+
+services:
+  db:
+    image: mysql:8.0
+    container_name: mysql-container
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: grow_analytics
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+    networks:
+      - grow-network
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      DATABASE_URL_TEST: mysql://root:root@db:3306/test_db
+    depends_on:
+      - db
+    networks:
+      - grow-network
+
+volumes:
+  mysql-data:
+
+networks:
+  grow-network:
+    driver: bridge
