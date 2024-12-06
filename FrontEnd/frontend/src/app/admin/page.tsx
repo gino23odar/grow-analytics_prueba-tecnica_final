@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Table, Button, message, Input, Modal } from 'antd';
+import { Table, Button, message, Input} from 'antd';
 import { getAdminUsers, updateUser, deleteUser } from '@/utils/api';
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import { User } from '../../types/types';
@@ -38,27 +38,22 @@ const AdminUserTable = () => {
     try {
       await updateUser(user.id, user);
       message.success('Usuario actualizado exitosamente!');
-      setEditableUserId(null); // Reset editable user ID after saving
+      setEditableUserId(null); 
     } catch (error) {
       console.error(error);
       message.error('No se pudo actualizar el usuario!');
     }
   };
 
-  const handleDelete = async (userId: number) => {
-    Modal.confirm({
-      title: '¿Estás seguro de que deseas eliminar este usuario?',
-      onOk: async () => {
-        try {
-          await deleteUser(userId);
-          setUsers(users.filter(user => user.id !== userId));
-          message.success('Usuario eliminado exitosamente!');
-        } catch (error) {
-          console.error(error);
-          message.error('No se pudo eliminar el usuario!');
-        }
-      },
-    });
+  const handleDelete = async (id: number) => {
+    try {
+        await deleteUser(id);
+        message.success('User deleted!');
+        setUsers(users.filter(user => user.id !== id));
+    } catch (error) {
+        console.error(error);
+        message.error('Failed to delete user!');
+    }
   };
 
   if (loading) {

@@ -21,7 +21,7 @@ export default function UsersPage() {
         try {
             const usersData = await getUsers();
             console.log(usersData);
-    
+
             if (Array.isArray(usersData.data)) {
                 setUsers(usersData.data);
             } else if (typeof usersData.data === 'object') {
@@ -34,7 +34,7 @@ export default function UsersPage() {
             message.error('Failed to fetch users!');
         }
     };
-    
+
 
     useEffect(() => {
         fetchUsers();
@@ -153,7 +153,7 @@ export default function UsersPage() {
             />
             <Modal
                 title="Edit User"
-                visible={isEditUserModalVisible}
+                open={isEditUserModalVisible}
                 onCancel={() => setIsEditUserModalVisible(false)}
                 footer={null}
             >
