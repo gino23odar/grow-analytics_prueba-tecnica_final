@@ -34,7 +34,7 @@ beforeAll(async () => {
 
     // Use the test database
     await connection.query('USE test_db');
-    
+
 
     // Run migrations on test database
     await prisma.$executeRaw`

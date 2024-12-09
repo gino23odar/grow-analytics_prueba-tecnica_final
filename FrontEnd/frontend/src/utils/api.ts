@@ -16,11 +16,15 @@ const getAuthHeaders = (): HeadersInit => {
     return {}; // Return an empty object if no token
 }
 
-export async function getUsers() {
-    const response = await fetch(`${BASE_URL}/users`, {
+export async function getUsers(page: number = 1, limit: number = 10) {
+    const response = await fetch(`${BASE_URL}/users?page=${page}&limit=${limit}`, {
         headers: getAuthHeaders(),
     });
-    if (!response.ok) throw new Error('Failed to fetch users');
+
+    if (!response.ok) {
+        throw new Error('Failed to fetch users');
+    }
+
     return response.json();
 }
 
@@ -53,19 +57,19 @@ export async function updateUser(id: number, data: User) {
     if (!response.ok) throw new Error('Failed to update user');
 }
 
-export async function getAdminUsers(): Promise<{ data: AdminUser[] }> {
-  const response = await fetch(`${BASE_URL}/admin/users`, {
-    method: 'GET',
-    headers: {
-      'Authorization': `Bearer ${localStorage.getItem('authToken')}`,
-      'Content-Type': 'application/json',
-    },
-  });
+export async function getAdminUsers(page: number = 1, limit: number = 10): Promise<{ data: AdminUser[] }> {
+    const response = await fetch(`${BASE_URL}/admin/users?page=${page}&limit=${limit}`, {
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ${localStorage.getItem('authToken')}`,
+            'Content-Type': 'application/json',
+        },
+    });
 
-  if (!response.ok) {
-    throw new Error('Failed to fetch admin users');
-  }
+    if (!response.ok) {
+        throw new Error('Failed to fetch admin users');
+    }
 
-  const data = await response.json();
-  return { data: data }; // Wrap the response in an object with a 'data' property
+    const data = await response.json();
+    return { data: data };
 }

@@ -1,8 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react';
-import { Table, Button, message, Input, Modal } from 'antd';
-//import { useRouter } from 'next/navigation';
+import { Table, Button, message, Input, Modal, Pagination } from 'antd';
 import { getUsers, deleteUser } from '@/utils/api';
 import { User } from '../../types/types';
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
@@ -15,11 +14,13 @@ export default function UsersPage() {
     const [isEditUserModalVisible, setIsEditUserModalVisible] = useState(false);
     const [currentUser, setCurrentUser] = useState<User | null>(null);
     const [searchTerm, setSearchTerm] = useState('');
-    //const router = useRouter();
+    const [currentPage, setCurrentPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(1);
+    const limit = 10;
 
-    const fetchUsers = async () => {
+    const fetchUsers = async (page: number = 1) => {
         try {
-            const usersData = await getUsers();
+            const usersData = await getUsers(page, limit);
             console.log(usersData);
 
             if (Array.isArray(usersData.data)) {
@@ -27,18 +28,23 @@ export default function UsersPage() {
             } else if (typeof usersData.data === 'object') {
                 setUsers(Object.values(usersData.data).map((user) => ({ ...(user as User), key: (user as User).id })));
             } else {
-                message.error('Fomato de data invalido!');
+                message.error('Invalid data format!');
             }
+            setTotalPages(usersData.totalPages);
         } catch (error) {
             console.error(error);
             message.error('Failed to fetch users!');
         }
     };
 
+    const handlePageChange = (page: number) => {
+        setCurrentPage(page);
+        fetchUsers(page);
+    };
 
     useEffect(() => {
-        fetchUsers();
-    }, []);
+        fetchUsers(currentPage);
+    }, [currentPage]);
 
     const handleEdit = (user: User) => {
         setCurrentUser(user);
@@ -57,11 +63,11 @@ export default function UsersPage() {
     };
 
     const handleUserCreated = () => {
-        fetchUsers();
+        fetchUsers(currentPage);
     };
 
     const handleUserUpdated = () => {
-        fetchUsers();
+        fetchUsers(currentPage);
         setIsEditUserModalVisible(false);
     };
 
@@ -79,21 +85,21 @@ export default function UsersPage() {
             onFilter: (value: number, record: User) => record.id === value,
         },
         {
-            title: 'usuario',
+            title: 'Usuario',
             dataIndex: 'usuario',
             sorter: (a: User, b: User) => a.usuario.localeCompare(b.usuario),
             filters: users.map(user => ({ text: user.usuario, value: user.usuario })),
             onFilter: (value: string, record: User) => record.usuario.includes(value),
         },
         {
-            title: 'correo',
+            title: 'Correo',
             dataIndex: 'correo',
             sorter: (a: User, b: User) => a.correo.localeCompare(b.correo),
             filters: users.map(user => ({ text: user.correo, value: user.correo })),
             onFilter: (value: string, record: User) => record.correo.includes(value),
         },
         {
-            title: 'nombre completo',
+            title: 'Nombre Completo',
             dataIndex: 'nombre_completo',
             render: (text: string, record: User) => (
                 <span>{record.nombre} {record.apell_paterno} {record.apell_materno}</span>
@@ -105,7 +111,7 @@ export default function UsersPage() {
             },
         },
         {
-            title: 'acciones',
+            title: 'Acciones',
             render: (text: string, record: User) => (
                 <div key={record.id}>
                     <Button
@@ -137,14 +143,22 @@ export default function UsersPage() {
                 onClick={() => setIsCreateUserModalVisible(true)}
                 className="m-4"
             >
-                Create New User
+                Crear nuevo usuario
             </Button>
             <Table
                 columns={columns}
                 dataSource={filteredUsers}
                 rowKey="id"
-                pagination={{ pageSize: 10 }}
+                pagination={false}
                 className='mx-4'
+            />
+            <Pagination
+                current={currentPage}
+                total={totalPages * limit}
+                pageSize={limit}
+                onChange={handlePageChange}
+                showSizeChanger={false}
+                className="m-4"
             />
             <CreateUserForm
                 open={isCreateUserModalVisible}
@@ -152,7 +166,7 @@ export default function UsersPage() {
                 onUserCreated={handleUserCreated}
             />
             <Modal
-                title="Edit User"
+                title="Editar usuario"
                 open={isEditUserModalVisible}
                 onCancel={() => setIsEditUserModalVisible(false)}
                 footer={null}
@@ -167,4 +181,3 @@ export default function UsersPage() {
         </>
     );
 }
-

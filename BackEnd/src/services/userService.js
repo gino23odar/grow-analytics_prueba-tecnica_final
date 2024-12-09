@@ -3,11 +3,21 @@ const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
 const getAllUsers = async (page, limit) => {
+
+  // asegurar que son Integers
+  page = parseInt(page, 10);
+  limit = parseInt(limit, 10);
+
+  // y que son numeros positivos
+  if (isNaN(page) || page <= 0 || isNaN(limit) || limit <= 0) {
+    throw new Error('Page and limit must be positive integers.');
+  }
+
   const users = await prisma.usuario.findMany({
     skip: (page - 1) * limit,
     take: parseInt(limit),
     include: {
-      Rol: true, // Include role data (if defined in Prisma schema)
+      Rol: true,
     },
   });
   const totalUsers = await prisma.usuario.count();
@@ -15,6 +25,7 @@ const getAllUsers = async (page, limit) => {
     data: users,
     total: totalUsers,
     totalPages: Math.ceil(totalUsers / limit),
+    currentPAge: page
   };
 };
 
@@ -38,8 +49,8 @@ const createUser = async (usuario, correo, contrasena, rol_id, nombre, apell_pat
       correo,
       contrasena: hashedPassword,
       rol_id,
-      nombre, 
-      apell_paterno, 
+      nombre,
+      apell_paterno,
       apell_materno,
       tipo_usuario,
     },

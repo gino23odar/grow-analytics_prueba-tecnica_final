@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Table, Button, message, Input} from 'antd';
+import { Table, Button, message, Input } from 'antd';
 import { getAdminUsers, updateUser, deleteUser } from '@/utils/api';
 import { EditOutlined, DeleteOutlined, SearchOutlined } from '@ant-design/icons';
 import { User } from '../../types/types';
@@ -20,10 +20,9 @@ const AdminUserTable = () => {
     tipo_usuario: '',
   });
 
-  const fetchUsers = async () => {
+  const fetchUsers = async (page: number = 1, limit: number = 10) => {
     try {
-      const usersData = await getAdminUsers();
-      console.log(usersData)
+      const usersData = await getAdminUsers(page, limit);
       if (Array.isArray(usersData.data)) {
         setUsers(usersData.data);
         setFilteredUsers(usersData.data);
@@ -41,19 +40,17 @@ const AdminUserTable = () => {
   };
 
   useEffect(() => {
-    
     const token = getAuthToken();
     if (token) {
-      // Decodifica el token para verificar el rol del usuario
       const decodedToken = JSON.parse(atob(token.split('.')[1]));
       if (decodedToken.rol === 'admin') {
         setIsAdmin(true);
       } else {
         setShowPopup(true);
         setTimeout(() => {
-            setShowPopup(false);
-            router.push('/login'); // Redirige a login después de ocultar el popup
-          }, 3000);
+          setShowPopup(false);
+          window.location.href = '/login'; // Use native browser redirect instead of React Router
+        }, 3000);
       }
     } else {
       message.error('No estás autenticado.');
@@ -62,7 +59,6 @@ const AdminUserTable = () => {
   }, []);
 
   useEffect(() => {
-    // Filtrar usuarios cada vez que cambian los valores de búsqueda
     const filtered = users.filter(user => {
       return (
         user.id.toString().includes(searchValues.id) &&
@@ -81,7 +77,7 @@ const AdminUserTable = () => {
     try {
       await updateUser(user.id, user);
       message.success('Usuario actualizado exitosamente!');
-      setEditableUserId(null); 
+      setEditableUserId(null);
     } catch (error) {
       console.error(error);
       message.error('No se pudo actualizar el usuario!');
@@ -90,12 +86,12 @@ const AdminUserTable = () => {
 
   const handleDelete = async (id: number) => {
     try {
-        await deleteUser(id);
-        message.success('User deleted!');
-        setUsers(users.filter(user => user.id !== id));
+      await deleteUser(id);
+      message.success('User deleted!');
+      setUsers(users.filter(user => user.id !== id));
     } catch (error) {
-        console.error(error);
-        message.error('Failed to delete user!');
+      console.error(error);
+      message.error('Failed to delete user!');
     }
   };
 
@@ -108,7 +104,7 @@ const AdminUserTable = () => {
       title: (
         <div>
           ID
-          <Button icon={<SearchOutlined />} onClick={() => {}} />
+          <Button icon={<SearchOutlined />} onClick={() => { }} />
           <Input
             placeholder="Buscar ID"
             value={searchValues.id}
@@ -124,7 +120,7 @@ const AdminUserTable = () => {
       title: (
         <div>
           Usuario
-          <Button icon={<SearchOutlined />} onClick={() => {}} />
+          <Button icon={<SearchOutlined />} onClick={() => { }} />
           <Input
             placeholder="Buscar Usuario"
             value={searchValues.usuario}
@@ -149,7 +145,7 @@ const AdminUserTable = () => {
       title: (
         <div>
           Tipo de Usuario
-          <Button icon={<SearchOutlined />} onClick={() => {}} />
+          <Button icon={<SearchOutlined />} onClick={() => { }} />
           <Input
             placeholder="Buscar Tipo"
             value={searchValues.tipo_usuario}
@@ -187,16 +183,16 @@ const AdminUserTable = () => {
 
   return (
     <>
-        {showPopup && <div className='bg-red-600 w-full text-2xl justify-center items-center'>No estas autorizado para ver esta tabla</div>}
-        <Table
+      {showPopup && <div className='bg-red-600 w-full text-2xl justify-center items-center'>No estas autorizado para ver esta tabla</div>}
+      <Table
         columns={columns}
         dataSource={filteredUsers}
         rowKey="id"
         pagination={{ pageSize: 10 }}
         className='m-4'
-        />
+      />
     </>
   );
 };
 
-export default AdminUserTable; 
+export default AdminUserTable;
