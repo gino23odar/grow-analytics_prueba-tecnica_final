@@ -1,19 +1,19 @@
 import { User, AdminUser } from '../types/types';
 
-const BASE_URL = 'http://localhost:3001/api'; // Base URL for the API
+const BASE_URL = 'http://localhost:3001/api';
 
-// Function to get the auth token from localStorage or sessionStorage
+
 const getAuthToken = () => {
-    return localStorage.getItem('authToken'); // Replace with your storage method
+    return localStorage.getItem('authToken');
 }
 
-// Helper to include authorization in headers
+
 const getAuthHeaders = (): HeadersInit => {
     const token = getAuthToken();
     if (token) {
         return { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' };
     }
-    return {}; // Return an empty object if no token
+    return {};
 }
 
 export async function getUsers(page: number = 1, limit: number = 10) {
@@ -51,7 +51,7 @@ export async function updateUser(id: number, data: User) {
         body: JSON.stringify(data),
         headers: {
             'Content-Type': 'application/json',
-            ...getAuthHeaders(), // Add authorization headers
+            ...getAuthHeaders(),
         },
     });
     if (!response.ok) throw new Error('Failed to update user');

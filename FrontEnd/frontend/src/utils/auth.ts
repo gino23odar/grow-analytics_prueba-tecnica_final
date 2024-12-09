@@ -1,4 +1,4 @@
-const BASE_URL = 'http://localhost:3001/api/auth'; // Base URL for the authentication API
+const BASE_URL = 'http://localhost:3001/api/auth';
 
 export async function login(email: string, password: string): Promise<void> {
 

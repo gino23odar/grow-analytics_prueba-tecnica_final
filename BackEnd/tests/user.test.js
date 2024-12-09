@@ -56,7 +56,6 @@ const newUser = {
 let authToken;
 
 beforeAll(async () => {
-  // Clean up and create test user
   await prisma.usuario.deleteMany({
     where: {
       OR: [
@@ -68,7 +67,6 @@ beforeAll(async () => {
     }
   });
 
-  // Register test user
   const registerResponse = await request(app)
     .post('/api/auth/register')
     .send({
@@ -97,7 +95,6 @@ beforeAll(async () => {
     });
   console.log('Register Response2:', registerResponse.body);
 
-  // Login to get token
   const loginResponse = await request(app)
     .post('/api/auth/login')
     .send({

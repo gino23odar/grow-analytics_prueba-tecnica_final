@@ -23,7 +23,7 @@ const testUser = {
 };
 
 beforeAll(async () => {
-  // Clean up database before tests
+  // Clean up database before
   await prisma.usuario.deleteMany({
     where: {
       correo: testUser.correo
@@ -32,7 +32,7 @@ beforeAll(async () => {
 });
 
 afterAll(async () => {
-  // Clean up database after tests
+  // Clean up database after
   await prisma.usuario.deleteMany({
     where: {
       correo: testUser.correo
@@ -48,7 +48,7 @@ describe('POST /auth/register', () => {
       .send(testUser);
 
     if (response.status !== 201) {
-      console.log('Register Response:', response.body); // Log the error response
+      console.log('Register Response:', response.body);
     }
 
     expect(response.status).toBe(201);
@@ -61,7 +61,6 @@ describe('POST /auth/register', () => {
     const incompleteUser = {
       usuario: 'incomplete',
       correo: 'incomplete@example.com'
-      // Missing password and other required fields
     };
 
     const response = await request(app)
@@ -125,7 +124,6 @@ describe('GET /auth/protected', () => {
   let authToken;
 
   beforeAll(async () => {
-    // Login to get token
     const response = await request(app)
       .post('/api/auth/login')
       .send({

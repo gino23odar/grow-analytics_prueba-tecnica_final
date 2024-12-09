@@ -21,7 +21,7 @@ export default function LoginPage() {
   };
 
   const goToSignUp = () => {
-    router.push('/register'); // Redirects to the registration page
+    router.push('/register');
   };
 
   return (
@@ -50,10 +50,10 @@ export default function LoginPage() {
             </Button>
           </div>
         </div>
-        <img 
-          src="/pruebatecnicacover.jpg" 
-          alt="Cover" 
-          className="w-full h-full object-fill rounded-r" 
+        <img
+          src="/pruebatecnicacover.jpg"
+          alt="Cover"
+          className="w-full h-full object-fill rounded-r"
         />
       </div>
     </div>

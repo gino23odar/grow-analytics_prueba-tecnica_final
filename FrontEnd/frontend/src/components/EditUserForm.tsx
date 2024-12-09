@@ -16,7 +16,6 @@ const EditUserForm: React.FC<EditUserFormProps> = ({ user, onUserUpdated }) => {
     const [apellMaterno, setApellMaterno] = useState(user.apell_materno);
 
     useEffect(() => {
-        // Update state when user prop changes
         setUsuario(user.usuario);
         setCorreo(user.correo);
         setNombre(user.nombre);

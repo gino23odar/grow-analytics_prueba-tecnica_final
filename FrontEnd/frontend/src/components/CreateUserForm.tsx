@@ -2,9 +2,9 @@ import { useState } from 'react';
 import { Input, Button, message, Modal } from 'antd';
 
 interface CreateUserFormProps {
-    open: boolean; // Type for visibility
-    onClose: () => void; // Type for the close function
-    onUserCreated: () => void; // Type for the user created callback
+    open: boolean;
+    onClose: () => void;
+    onUserCreated: () => void;
 }
 
 const CreateUserForm: React.FC<CreateUserFormProps> = ({ open, onClose, onUserCreated }) => {
@@ -37,8 +37,8 @@ const CreateUserForm: React.FC<CreateUserFormProps> = ({ open, onClose, onUserCr
             }
 
             message.success('User created successfully!');
-            onUserCreated(); // Callback to refresh user list
-            onClose(); // Close the modal
+            onUserCreated();
+            onClose();
         } catch (error) {
             console.error(error);
             message.error('Failed to create user!');

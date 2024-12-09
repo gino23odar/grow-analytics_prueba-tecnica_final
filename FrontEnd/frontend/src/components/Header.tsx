@@ -8,7 +8,7 @@ const Header = () => {
 
   const handleLogout = () => {
     logout();
-    router.push('/login'); // Redirect to login page after logout
+    router.push('/login');
   };
 
   return (

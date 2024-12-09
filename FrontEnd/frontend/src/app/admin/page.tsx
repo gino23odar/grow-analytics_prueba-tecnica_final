@@ -49,7 +49,7 @@ const AdminUserTable = () => {
         setShowPopup(true);
         setTimeout(() => {
           setShowPopup(false);
-          window.location.href = '/login'; // Use native browser redirect instead of React Router
+          window.location.href = '/users';
         }, 3000);
       }
     } else {
